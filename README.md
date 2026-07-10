@@ -1,4 +1,21 @@
-# Learts React + Express + SQLite
+# Learts React + Express + Supabase
+
+## Supabase database
+
+Backend lưu users, categories, products và orders trên Supabase PostgreSQL.
+
+1. Tạo project tại Supabase.
+2. Trong Dashboard chọn **Connect** → **Session pooler** và sao chép connection string.
+3. Sao chép `.env.example` thành `.env`.
+4. Điền `SUPABASE_DATABASE_URL` và đổi `JWT_SECRET` trong `.env`.
+5. Chạy `npm run dev`. Backend tự tạo bảng, dữ liệu mẫu và tài khoản admin.
+
+```env
+SUPABASE_DATABASE_URL=postgresql://postgres.PROJECT_REF:PASSWORD@aws-0-REGION.pooler.supabase.com:5432/postgres
+JWT_SECRET=your-long-random-secret
+```
+
+Không commit `.env`; file này đã được thêm vào `.gitignore`.
 
 Dự án thương mại điện tử gồm React/Vite frontend và Express/SQLite backend.
 

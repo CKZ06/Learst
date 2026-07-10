@@ -9,6 +9,9 @@ export default function LoginRegisterPage() {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [register, setRegister] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [registerError, setRegisterError] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,6 +29,28 @@ export default function LoginRegisterPage() {
       setLoginError(error instanceof Error ? error.message : 'Đăng nhập thất bại.');
     } finally {
       setIsLoggingIn(false);
+    }
+  }
+
+  async function handleRegister(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setRegisterError('');
+    if (register.password !== register.confirmPassword) {
+      setRegisterError('Mật khẩu xác nhận không khớp.');
+      return;
+    }
+    setIsRegistering(true);
+    try {
+      const data = await api<{ token: string; user: unknown }>('/api/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ name: register.name, email: register.email, password: register.password }),
+      });
+      saveAuth(data.token, data.user);
+      navigate('/my-account.html', { replace: true });
+    } catch (error) {
+      setRegisterError(error instanceof Error ? error.message : 'Đăng ký thất bại.');
+    } finally {
+      setIsRegistering(false);
     }
   }
 
@@ -131,8 +156,12 @@ export default function LoginRegisterPage() {
                   </p>
                 </div>
                 <div className="login-register-form">
-                  <form action="#">
+                  <form onSubmit={handleRegister}>
                     <div className="row learts-mb-n50">
+                      <div className="col-12 learts-mb-20">
+                        <label htmlFor="registerName">Full name <abbr className="required">*</abbr></label>
+                        <input id="registerName" value={register.name} onChange={(event) => setRegister({ ...register, name: event.target.value })} required minLength={2} />
+                      </div>
                       <div className="col-12 learts-mb-20">
                         <label htmlFor="registerEmail">
                           Email address 
@@ -140,16 +169,25 @@ export default function LoginRegisterPage() {
                             *
                           </abbr>
                         </label>
-                        <input type="email" id="registerEmail" />
+                        <input type="email" id="registerEmail" value={register.email} onChange={(event) => setRegister({ ...register, email: event.target.value })} required />
+                      </div>
+                      <div className="col-12 learts-mb-20">
+                        <label htmlFor="registerPassword">Password <abbr className="required">*</abbr></label>
+                        <input type="password" id="registerPassword" value={register.password} onChange={(event) => setRegister({ ...register, password: event.target.value })} required minLength={6} />
+                      </div>
+                      <div className="col-12 learts-mb-20">
+                        <label htmlFor="registerConfirmPassword">Confirm password <abbr className="required">*</abbr></label>
+                        <input type="password" id="registerConfirmPassword" value={register.confirmPassword} onChange={(event) => setRegister({ ...register, confirmPassword: event.target.value })} required minLength={6} />
                       </div>
                       <div className="col-12 learts-mb-50">
                         <p>
                           Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy
                         </p>
                       </div>
+                      {registerError && <div className="col-12 text-danger learts-mb-20" role="alert">{registerError}</div>}
                       <div className="col-12 text-center learts-mb-50">
-                        <button className="btn btn-dark btn-outline-hover-dark">
-                          Register
+                        <button className="btn btn-dark btn-outline-hover-dark" type="submit" disabled={isRegistering}>
+                          {isRegistering ? 'Registering...' : 'Register'}
                         </button>
                       </div>
                     </div>

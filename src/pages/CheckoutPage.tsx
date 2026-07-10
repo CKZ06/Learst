@@ -2,15 +2,16 @@ import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import Layout from '../components/Layout';
+import { api, getStoredUser, getToken } from '../admin/api';
 import { getCartTotal, useCartStore } from '../store/cartStore';
 
 interface OrderResult { id:number; code:string; total:number }
-interface ApiResponse<T> { success:boolean; message:string; data:T }
 
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
-  const [customer, setCustomer] = useState({ name: '', email: '', address: '' });
+  const savedUser = getStoredUser<{ name: string; email: string }>();
+  const [customer, setCustomer] = useState({ name: savedUser?.name ?? '', email: savedUser?.email ?? '', address: '' });
   const [error, setError] = useState('');
   const [order, setOrder] = useState<OrderResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -20,10 +21,9 @@ export default function CheckoutPage() {
     try {
       const orderItems = items.map((item) => ({ productId: Number(item.id), quantity: item.quantity }));
       if (!orderItems.length || orderItems.some((item) => !Number.isInteger(item.productId))) throw new Error('Your cart contains legacy products. Please add products from the Shop API page.');
-      const response = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ customer, items: orderItems }) });
-      const body = await response.json() as ApiResponse<OrderResult>;
-      if (!response.ok) throw new Error(body.message);
-      setOrder(body.data); clearCart();
+      if (!getToken()) throw new Error('Please log in or register before placing an order.');
+      const result = await api<OrderResult>('/api/orders', { method: 'POST', body: JSON.stringify({ customer, items: orderItems }) });
+      setOrder(result); clearCart();
     } catch (caught) { setError(caught instanceof Error ? caught.message : 'Checkout failed.'); }
     finally { setSubmitting(false); }
   }

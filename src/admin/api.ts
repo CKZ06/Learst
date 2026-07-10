@@ -3,6 +3,11 @@ export const TOKEN_KEY = 'learts-admin-token';
 export const USER_KEY = 'learts-admin-user';
 
 export function getToken() { return localStorage.getItem(TOKEN_KEY); }
+export function getStoredUser<T = { id: number; name: string; email: string; role: string }>() {
+  const value = localStorage.getItem(USER_KEY);
+  if (!value) return null;
+  try { return JSON.parse(value) as T; } catch { return null; }
+}
 export function clearAuth() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
