@@ -1,0 +1,52 @@
+{
+  "name": "learstthi-react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev:full",
+    "dev:client": "vite",
+    "dev:server": "tsx watch backend/index.ts",
+    "dev:full": "concurrently -k -n API,WEB -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "server": "tsx backend/index.ts",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "typecheck:server": "tsc -p backend/tsconfig.json",
+    "check": "npm run lint && npm run typecheck && npm run typecheck:server && npm run build"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.11.1",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.9.4",
+    "vite": "^8.0.1",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^10.0.3",
+    "eslint": "^10.6.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "tsx": "^4.23.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.63.0"
+  }
+}

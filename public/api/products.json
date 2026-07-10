@@ -1,0 +1,12 @@
+[
+  {"id":"boho-beard-mug","name":"Boho Beard Mug","price":39,"oldPrice":45,"image":"/assets/images/product/s328/product-1.webp","hoverImage":"/assets/images/product/s328/product-1-hover.webp","category":"Gift ideas","badge":"-13%"},
+  {"id":"motorized-tricycle","name":"Motorized Tricycle","price":35,"image":"/assets/images/product/s328/product-2.webp","hoverImage":"/assets/images/product/s328/product-2-hover.webp","category":"Kids & Babies"},
+  {"id":"walnut-cutting-board","name":"Walnut Cutting Board","price":100,"image":"/assets/images/product/s328/product-3.webp","hoverImage":"/assets/images/product/s328/product-3-hover.webp","category":"Kitchen","badge":"hot"},
+  {"id":"pizza-plate-tray","name":"Pizza Plate Tray","price":22,"oldPrice":30,"image":"/assets/images/product/s328/product-4.webp","hoverImage":"/assets/images/product/s328/product-4-hover.webp","category":"Kitchen","badge":"-27%"},
+  {"id":"minimalist-ceramic-pot","name":"Minimalist Ceramic Pot","price":120,"image":"/assets/images/product/s328/product-5.webp","hoverImage":"/assets/images/product/s328/product-5-hover.webp","category":"Home Decor"},
+  {"id":"clear-silicate-teapot","name":"Clear Silicate Teapot","price":140,"image":"/assets/images/product/s328/product-6.webp","hoverImage":"/assets/images/product/s328/product-6-hover.webp","category":"Kitchen"},
+  {"id":"lucky-wooden-elephant","name":"Lucky Wooden Elephant","price":35,"image":"/assets/images/product/s328/product-7.webp","hoverImage":"/assets/images/product/s328/product-7-hover.webp","category":"Gift ideas","badge":"hot"},
+  {"id":"decorative-christmas-fox","name":"Decorative Christmas Fox","price":50,"image":"/assets/images/product/s328/product-8.webp","hoverImage":"/assets/images/product/s328/product-8-hover.webp","category":"Gift ideas","badge":"hot"},
+  {"id":"aluminum-equestrian","name":"Aluminum Equestrian","price":100,"image":"/assets/images/product/s328/product-9.webp","hoverImage":"/assets/images/product/s328/product-9-hover.webp","category":"Home Decor"},
+  {"id":"fish-cut-out-set","name":"Fish Cut Out Set","price":9,"image":"/assets/images/product/s328/product-10.webp","hoverImage":"/assets/images/product/s328/product-10-hover.webp","category":"Home Decor"}
+]
