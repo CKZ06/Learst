@@ -74,7 +74,8 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'learts-cart',
-      version: 1,
+      version: 2,
+      migrate: () => ({ items: [] }),
     },
   ),
 );
@@ -84,4 +85,3 @@ export const getCartCount = (items: CartItem[]) =>
 
 export const getCartTotal = (items: CartItem[]) =>
   items.reduce((total, item) => total + item.price * item.quantity, 0);
-

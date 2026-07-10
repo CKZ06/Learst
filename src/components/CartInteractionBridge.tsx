@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useCartStore, type Product } from '../store/cartStore';
+import { useWishlistStore } from '../store/wishlistStore';
 
 function slugify(value: string): string {
   return value
@@ -65,11 +66,23 @@ function readProduct(button: Element): { product: Product; quantity: number } | 
 
 export default function CartInteractionBridge() {
   const addItem = useCartStore((state) => state.addItem);
+  const addWishlistItem = useWishlistStore((state) => state.addItem);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
+
+      const wishlistButton = target.closest<HTMLElement>('[data-hint="Add to wishlist"], [data-hint="Add to Wishlist"]');
+      if (wishlistButton) {
+        const result = readProduct(wishlistButton);
+        if (result) {
+          event.preventDefault();
+          addWishlistItem(result.product);
+          wishlistButton.setAttribute('data-hint', 'Added to wishlist');
+        }
+        return;
+      }
 
       const button = target.closest<HTMLElement>(
         '[data-hint="Add to Cart"], [data-cart-action="add"]',
@@ -94,7 +107,7 @@ export default function CartInteractionBridge() {
 
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);
-  }, [addItem]);
+  }, [addItem, addWishlistItem]);
 
   return null;
 }

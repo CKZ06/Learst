@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCartCount, getCartTotal, useCartStore } from '../store/cartStore';
+import { useWishlistStore } from '../store/wishlistStore';
 
 export default function Header() {
   const cartItems = useCartStore((state) => state.items);
   const cartCount = getCartCount(cartItems);
   const cartTotal = getCartTotal(cartItems);
+  const increaseQuantity = useCartStore((state) => state.increaseQuantity);
+  const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
+  const removeCartItem = useCartStore((state) => state.removeItem);
+  const wishlistItems = useWishlistStore((state) => state.items);
+  const removeWishlistItem = useWishlistStore((state) => state.removeItem);
+  const addCartItem = useCartStore((state) => state.addItem);
   const [activeOffcanvas, setActiveOffcanvas] = useState<string | null>(null);
 
   useEffect(() => {
@@ -156,7 +163,7 @@ export default function Header() {
               <div className="header-wishlist">
                 <a href="#offcanvas-wishlist" className="offcanvas-toggle">
                   <span className="wishlist-count">
-                    3
+                    {wishlistItems.length}
                   </span>
                   <i className="far fa-heart"></i>
                 </a>
@@ -1623,7 +1630,7 @@ export default function Header() {
               <div className="header-wishlist">
                 <a href="#offcanvas-wishlist" className="offcanvas-toggle">
                   <span className="wishlist-count">
-                    3
+                    {wishlistItems.length}
                   </span>
                   <i className="far fa-heart"></i>
                 </a>
@@ -1681,7 +1688,7 @@ export default function Header() {
               <div className="header-wishlist d-none d-sm-block">
                 <a href="#offcanvas-wishlist" className="offcanvas-toggle">
                   <span className="wishlist-count">
-                    3
+                    {wishlistItems.length}
                   </span>
                   <i className="far fa-heart"></i>
                 </a>
@@ -1739,7 +1746,7 @@ export default function Header() {
               <div className="header-wishlist d-none d-sm-block">
                 <a href="#offcanvas-wishlist" className="offcanvas-toggle">
                   <span className="wishlist-count">
-                    3
+                    {wishlistItems.length}
                   </span>
                   <i className="far fa-heart"></i>
                 </a>
@@ -1835,63 +1842,17 @@ export default function Header() {
         </div>
         <div className="body customScroll">
           <ul className="minicart-product-list">
-            <li>
-              <Link to="/product-details.html" className="image">
-                <img src="/assets/images/product/cart-product-1.webp" alt="Cart product Image" />
-              </Link>
-              <div className="content">
-                <Link to="/product-details.html" className="title">
-                  Walnut Cutting Board
-                </Link>
-                <span className="quantity-price">
-                  1 x 
-                  <span className="amount">
-                    $100.00
-                  </span>
-                </span>
-                <a href="#" className="remove">
-                  ×
-                </a>
-              </div>
-            </li>
-            <li>
-              <Link to="/product-details.html" className="image">
-                <img src="/assets/images/product/cart-product-2.webp" alt="Cart product Image" />
-              </Link>
-              <div className="content">
-                <Link to="/product-details.html" className="title">
-                  Lucky Wooden Elephant
-                </Link>
-                <span className="quantity-price">
-                  1 x 
-                  <span className="amount">
-                    $35.00
-                  </span>
-                </span>
-                <a href="#" className="remove">
-                  ×
-                </a>
-              </div>
-            </li>
-            <li>
-              <Link to="/product-details.html" className="image">
-                <img src="/assets/images/product/cart-product-3.webp" alt="Cart product Image" />
-              </Link>
-              <div className="content">
-                <Link to="/product-details.html" className="title">
-                  Fish Cut Out Set
-                </Link>
-                <span className="quantity-price">
-                  1 x 
-                  <span className="amount">
-                    $9.00
-                  </span>
-                </span>
-                <a href="#" className="remove">
-                  ×
-                </a>
-              </div>
-            </li>
+            {wishlistItems.length === 0 ? <li className="justify-content-center py-4">Your wishlist is empty.</li> : wishlistItems.map((item) => (
+              <li key={item.id}>
+                <Link to="/product-details.html" className="image"><img src={item.image} alt={item.name} /></Link>
+                <div className="content">
+                  <Link to="/product-details.html" className="title">{item.name}</Link>
+                  <span className="quantity-price"><span className="amount">£{item.price.toFixed(2)}</span></span>
+                  <button type="button" className="remove" onClick={() => removeWishlistItem(item.id)} aria-label={`Remove ${item.name}`}>&times;</button>
+                  <button type="button" className="btn btn-sm btn-outline-dark mt-2" onClick={() => addCartItem(item)}>Add to cart</button>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="foot">
@@ -1917,63 +1878,22 @@ export default function Header() {
         </div>
         <div className="body customScroll">
           <ul className="minicart-product-list">
-            <li>
-              <Link to="/product-details.html" className="image">
-                <img src="/assets/images/product/cart-product-1.webp" alt="Cart product Image" />
-              </Link>
-              <div className="content">
-                <Link to="/product-details.html" className="title">
-                  Walnut Cutting Board
-                </Link>
-                <span className="quantity-price">
-                  1 x 
-                  <span className="amount">
-                    $100.00
-                  </span>
-                </span>
-                <a href="#" className="remove">
-                  ×
-                </a>
-              </div>
-            </li>
-            <li>
-              <Link to="/product-details.html" className="image">
-                <img src="/assets/images/product/cart-product-2.webp" alt="Cart product Image" />
-              </Link>
-              <div className="content">
-                <Link to="/product-details.html" className="title">
-                  Lucky Wooden Elephant
-                </Link>
-                <span className="quantity-price">
-                  1 x 
-                  <span className="amount">
-                    $35.00
-                  </span>
-                </span>
-                <a href="#" className="remove">
-                  ×
-                </a>
-              </div>
-            </li>
-            <li>
-              <Link to="/product-details.html" className="image">
-                <img src="/assets/images/product/cart-product-3.webp" alt="Cart product Image" />
-              </Link>
-              <div className="content">
-                <Link to="/product-details.html" className="title">
-                  Fish Cut Out Set
-                </Link>
-                <span className="quantity-price">
-                  1 x 
-                  <span className="amount">
-                    $9.00
-                  </span>
-                </span>
-                <a href="#" className="remove">
-                  ×
-                </a>
-              </div>
-            </li>
+            {cartItems.length === 0 ? <li className="justify-content-center py-4">Your cart is empty.</li> : cartItems.map((item) => (
+              <li key={item.id}>
+                <Link to="/product-details.html" className="image"><img src={item.image} alt={item.name} /></Link>
+                <div className="content">
+                  <Link to="/product-details.html" className="title">{item.name}</Link>
+                  <span className="quantity-price">{item.quantity} × <span className="amount">£{item.price.toFixed(2)}</span></span>
+                  <div className="mini-cart-quantity" aria-label={`Quantity for ${item.name}`}>
+                    <button type="button" onClick={() => decreaseQuantity(item.id)} aria-label="Decrease quantity">−</button>
+                    <strong>{item.quantity}</strong>
+                    <button type="button" onClick={() => increaseQuantity(item.id)} aria-label="Increase quantity">+</button>
+                  </div>
+                  <span className="mini-cart-line-total">£{(item.price * item.quantity).toFixed(2)}</span>
+                  <button type="button" className="remove" onClick={() => removeCartItem(item.id)} aria-label={`Remove ${item.name}`}>&times;</button>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="foot">
@@ -2704,7 +2624,7 @@ export default function Header() {
             <div className="header-wishlist">
               <Link to="/wishlist.html">
                 <span>
-                  3
+                  {wishlistItems.length}
                 </span>
                 <i className="far fa-heart"></i>
               </Link>

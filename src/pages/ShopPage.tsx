@@ -135,7 +135,16 @@ export default function ShopPage() {
                           {product.stock === 0 && <span className="product-badges"><span className="outofstock">Out</span></span>}
                           <img src={product.image} alt={product.name} />
                         </Link>
-                        <Link to="/wishlist.html" className="add-to-wishlist hintT-left" data-hint="Add to wishlist">
+                        <Link
+                          to="/wishlist.html"
+                          className="add-to-wishlist hintT-left"
+                          data-hint="Add to wishlist"
+                          data-product-id={product.id}
+                          data-product-name={product.name}
+                          data-product-price={product.price}
+                          data-product-image={product.image}
+                          data-product-category={product.categoryName}
+                        >
                           <i className="far fa-heart" />
                         </Link>
                       </div>
